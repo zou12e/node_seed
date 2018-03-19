@@ -1,0 +1,11 @@
+syntax = "proto3";
+option csharp_namespace = "CsharpRPCLibrary.Grpc";
+
+package gateway;
+import "copytrade.proto";
+
+
+// 获取经纪商列表
+service GatewaySrv {
+    rpc GetBrokers(copytrade.Empty) returns (copytrade.GetBrokersReply) {}
+}

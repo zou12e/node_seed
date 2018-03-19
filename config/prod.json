@@ -1,0 +1,5 @@
+{
+    "env" : "production",
+    "port" : 6019,
+    "host": "https://www.followme.com"
+}

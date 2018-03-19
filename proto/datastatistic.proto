@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package datastatistic;
+
+
+message EmptyMessage {}
+
+
+service DatastatisticSrv {
+
+    //查询账户指定周内常用交易品种
+    rpc GetAccountSymbolWeekInfoList(GetAccountWeekOfYearInfoRequest) returns (AccountSymbolWeekOfYearInfoList){}
+    //查询账户指定周内的统计信息
+    rpc GetAccountWeekOfYearInfoList(GetAccountWeekOfYearInfoRequest) returns (AccountWeekOfYearInfoList) {}
+    //交易员周排名
+    rpc GetTraderWeekOfYearRankingListAndAccountRankingInfo(GetAccountWeekOfYearInfoRequest) returns (TraderWeekOfYearRankingListAndAccountRankingInfo) {}
+    //跟随者周排名
+    rpc GetFollowerWeekOfYearRankingListAndAccountRankingInfo(GetAccountWeekOfYearInfoRequest) returns (FollowerWeekOfYearRankingListAndAccountRankingInfo) {}
+    //交易员的跟随者周排名---跟随者的交易员周排名
+    rpc GetAccountTraderOrFollowerRankingList(GetAccountWeekOfYearInfoRequest) returns (TraderOrFollowerRankingList) {}
+}
+
+//交易周报
+//请求周数据
+message GetAccountWeekOfYearInfoRequest {
+    int32    BrokerID        = 1; //经纪商ID
+    string   Account         = 2; //MT4账户
+    repeated WeekOfYear List = 3; //
+}
+
+//年份周数据
+message WeekOfYear {
+    int32 Year = 1; //年份
+    int32 Week = 2; //周
+}
+
+
+//交易品种列表
+message AccountSymbolWeekOfYearInfoList {
+    repeated AccountSymbolWeekOfYearInfo List = 1; //
+}
+
+//交易品种数据
+message AccountSymbolWeekOfYearInfo {
+    string StandardSymbol  = 1; //标准品种名
+    double RateOrder       = 2; //交易百分比
+    double RateProfit      = 3; //胜率
+}
+
+//交易周数数据列表
+message AccountWeekOfYearInfoList {
+    repeated AccountWeekOfYearInfo List = 1; //
+}
+
+//交易周数数据
+message AccountWeekOfYearInfo {
+    int32  BrokerID           = 1;  //经纪商ID
+    string Account            = 2;  //MT4账户
+    int32  Year               = 3;  //年份
+    int32  Week               = 4;  //周数
+    double Money              = 5;  //平仓收益
+    double Roi                = 6;  //历史余额收益率
+    double RateProfit         = 7;  //平仓胜率
+    int32  FansCount          = 8;  //粉丝数
+    int32  Orders             = 9;  //平仓订单数
+    double MaxRetracementRate = 10; //最大回撤
+}
+
+//交易员周排行和个人账户信息
+message TraderWeekOfYearRankingListAndAccountRankingInfo {
+    int32    Ranking                 = 1; //排名
+    double   FactorProfitEquity      = 2; //净值利润因子
+    repeated SuperTraderRanking List = 3; //
+}
+
+//精选交易员
+message SuperTraderRanking {
+    int32    UserID                 = 1;  //账户
+    int32    AccountIndex           = 2;  //账户index
+    int32    BrokerID               = 3;  //经纪商ID
+    string   Account                = 4;  //账户
+    double   FactorProfitEquity     = 5;  //净值利润因子
+    double   Money                  = 6;  //对应ScreeningTime时间段内的收益
+    int32    Weeks                  = 7;  //交易周期
+    double   TimePossessionAverage  = 8;  //平均持仓时间
+    int32    FanCount               = 9;  //粉丝人数
+    int32    Orders                 = 10; //订单数
+    int32    ScreeningTime          = 11; //时间范围(1:近一日,30:近30日，0:历史所有数据)
+    repeated AccountDayMoney List   = 12; //收益图
+    double   Pips                   = 13; //盈亏点数
+    double   MaxLossPips            = 14; //最大亏损点数
+    double   Score                  = 15; //评分
+}
+
+//跟随者周排行和个人账户信息
+message FollowerWeekOfYearRankingListAndAccountRankingInfo {
+    int32    Ranking              = 1; //排名
+    double   FollowMoney          = 2; //跟随收益
+    repeated FollowerRanking List = 3; //
+}
+
+//跟随大师
+message FollowerRanking {
+    int32    UserID               = 1;  //账户
+    int32    AccountIndex         = 2;  //账户index
+    int32    BrokerID             = 3;  //经纪商ID
+    string   Account              = 4;  //账户
+    double   FollowMoney          = 5;  //对应ScreeningTime时间段内的跟随收益
+    double   Pips                 = 6;  //对应ScreeningTime时间段内的盈亏点数
+    double   Roi                  = 7;  //收益率
+    double   AveragePips          = 8;  //平均获利点数
+    int32    Orders               = 9;  //订单数
+    int32    Weeks                = 10; //交易周期
+    int32    ScreeningTime        = 11; //时间范围(1:近一日,30:近30日，0:历史所有数据)
+    repeated AccountDayMoney List = 12; //收益图
+}
+
+
+//交易员的跟随者周排名---跟随者的交易员周排名---跟随收益
+message TraderOrFollowerRankingList {
+    repeated AccountCardInfo List = 1; //
+}
+
+
+//个人卡片数据
+message AccountCardInfo {
+    double  FactorProfitEquity  = 1; //净值利润因子
+    double  Roi                 = 2; //历史余额收益率
+    double  FollowPips          = 3; //跟随获利点数
+    int32   Weeks               = 4; //交易周期
+    int32   Orders              = 5; //订单数
+    double  FollowMoney         = 6; //跟随总获利(针对交易员)
+    double  Money               = 7; //跟随者总获利(针对跟随者)
+    int32   BrokerID            = 8;  //经纪商ID
+    string  Account             = 9;  //账户
+}
+
+//收益
+message AccountDayMoney {
+    int64  Date   = 1; //日期(经纪商时间)
+    double Money  = 2; //到当前日期的累计收益
+}

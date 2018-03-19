@@ -1,0 +1,85 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "FM.Trade";
+
+package cstrade;
+
+service TradeSrv{
+
+  //返回用户的有效账户(int userid)
+  rpc GetAllAvailableAccount(IntMessage) returns(ListUserAccountResponse){}
+
+  //返回用户的有效账户包括帐户余额(int userid)
+  rpc GetAllAvailableAccountWithBalance(IntMessage) returns(ListUserAccountResponse){}
+
+
+}
+
+
+message IntMessage {
+  int32 Value = 1;
+}
+
+message ListUserAccountResponse{
+  repeated UserAccountResponse Items=1;
+  repeated UserMoneySummaryMessage UserMoney=2;
+}
+
+
+
+message UserAccountResponse {
+  int32 Id = 1;
+  int32 UserId = 2;
+  string MT4Account = 3;
+  string MT4Password = 4;
+  string ManagerAccount = 5;
+  int32 BrokerId = 6;
+  int32 AccountType = 7;
+  int32 IsPublish = 8;
+  int32 MoneyType = 9;
+  int32 AccountStatus = 10;
+  string Remark = 11;
+  string CreateTime = 12;
+  bool FollowEnable = 13;
+  int32 FollowParameter = 14;
+  int32 CreateType = 15;
+  int32 UserType = 16;
+  int32 IsActive = 17;
+  string StrategyDescription = 18;
+  string Alias = 19;
+  int32 AccountIndex = 20;
+  string AccountIndexPad = 21;
+}
+
+message UserMoneySummaryMessage
+{
+  // 净入金
+  double RetainInMoney=1;
+  // 信用额
+  double Credit=2;
+  // 总盈亏
+  double TotalProfit=3;
+  // 总利息
+  double TotalInterest=4;
+  // 已平仓盈亏
+  double OpenProfit=5;
+  // 已平仓利息
+  double OpenInterest=6;
+  // 未平仓利息
+  double FloatProfit=7;
+  // 入金
+  double InMoney=8;
+  // 出金
+  double OutMoney=9;
+  // 浮动利息
+  double FloatInterest=10;
+  // 净值
+  double NetValue=11;
+  // 余额
+  double Balance=12;
+  // 已平仓佣金
+  double OpenCommission=13;
+  // 未平仓佣金
+  double FloatCommission=14;
+}
+ 

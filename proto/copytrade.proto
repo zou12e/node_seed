@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "CsharpRPCLibrary.Grpc";
+
+package copytrade;
+
+message Empty {
+}
+
+message GetBrokersReply {
+    repeated Broker List = 1; // 经纪商列表
+}
+
+message Broker {
+    int32 BrokerID = 1;         // ID
+    string Name  = 2;           // 名称
+    string FullName = 3;        // 全称
+    string Introduce = 4;       // 介绍
+    string Website = 5;         // 官网
+    string OpenAccountURL = 6;  // 开户URL
+    string IconURL = 7;         // 图标URL
+    string BigIconURL = 8;      // 大图标URL
+    double MinLots = 9;         // 最小手数
+    int32 Flag = 10;            // 设置标识
+    bool IsActive = 11;         // 是否激活
+}
